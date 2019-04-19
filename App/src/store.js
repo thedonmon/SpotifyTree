@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const RECOMMENDATION_GENERATOR_BASE = 'https://eb309177.ngrok.io'
+const RECOMMENDATION_GENERATOR_BASE = 'https://spotifytree.azurewebsites.net'
 const RECOMMENDATION_GENERATOR_API = RECOMMENDATION_GENERATOR_BASE + '/api/home'
 const CREATE_PLAYLIST = RECOMMENDATION_GENERATOR_API + '/createPlaylist'
 

@@ -15,7 +15,9 @@ export default {
   methods: {
     authorize () {
       var client_id = '56fe9ecd118c4d5699bc17e3bc7b4350'
-      var redirect_uri = 'http://localhost:8080/#/authorize'
+      var redirect_uri = 'https://spotifytree-d8e02.firebaseapp.com/#/authorize'
+
+      console.log(redirect_uri)
 
       var state = this.generateRandomString(16);
 
