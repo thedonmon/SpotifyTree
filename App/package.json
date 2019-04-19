@@ -1,5 +1,5 @@
 {
-  "name": "App",
+  "name": "truchet-tiles",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,9 +7,10 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "core-js": "^2.6.5",
-    "vue": "^2.6.10",
-    "vue-router": "^3.0.3",
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
