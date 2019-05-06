@@ -1,4 +1,5 @@
-﻿using SpotifyTree.Domain.Models.RequestModels;
+﻿using SpotifyTree.Domain.Models;
+using SpotifyTree.Domain.Models.RequestModels;
 using SpotifyTree.Domain.Models.ResponseModels;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,6 @@ namespace SpotifyTree.Domain.Interfaces
     {
         Task<IEnumerable<ArtistCrawlResponse>> GetAndCreateRelatedArtist(ArtistCrawlRequest request);
         Task<IEnumerable<ArtistCrawlResponse>> GetAndCreateRelatedArtist(IEnumerable<ArtistCrawlRequest> request);
-        Task<bool> CreatePlayListAsync(CreatePlaylistRequest request);
+        Task<ValidationResponse> CreatePlayListAsync(CreatePlaylistRequest request);
     }
 }

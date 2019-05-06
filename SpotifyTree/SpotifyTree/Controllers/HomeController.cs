@@ -37,11 +37,23 @@ namespace SpotifyTree.Controllers
 
         }
         [HttpPost]
+        [Route("getMultipleArtists")]
+        public async Task<IEnumerable<ArtistCrawlResponse>> Post([FromBody] IEnumerable<ArtistCrawlRequest> request)
+        {
+            return await _crawler.GetAndCreateRelatedArtist(request);
+
+        }
+        [HttpPost]
         [Route("createPlaylist")]
         public async Task<IActionResult> CreatePlaylist([FromBody] CreatePlaylistRequest request)
         {
             var response = await _crawler.CreatePlayListAsync(request);
-            return Ok();
+            if(response.Success)
+                return Ok();
+            else
+            {
+                return BadRequest($"Error while creating playlist: {response.Message}; StatusCode: {response.StatusCode}");
+            }
 
         }
 

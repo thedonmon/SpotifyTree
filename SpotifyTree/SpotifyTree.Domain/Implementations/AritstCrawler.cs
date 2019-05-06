@@ -10,21 +10,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using SpotifyTree.Domain.Models.ResponseModels;
+using SpotifyTree.Domain.Models;
 
 namespace SpotifyTree.Domain.Implementations
 {
     public class AritstCrawler : IArtistCrawler
     {
-        //private static string _clientId = Environment.GetEnvironmentVariable("ClientId"); 
-        //private static string _secretId = Environment.GetEnvironmentVariable("ClientSecret");
-
-        private static string _clientId = "56fe9ecd118c4d5699bc17e3bc7b4350";
-        private static string _secretId = "8cef3776f2ff4daa94ba0de3300e0c3d";
+        private static string _clientId = Environment.GetEnvironmentVariable("ClientId"); 
+        private static string _secretId = Environment.GetEnvironmentVariable("ClientSecret");
 
         private SpotifyWebAPI spotifyApi;
 
-        public async Task<bool> CreatePlayListAsync(CreatePlaylistRequest request)
+        public async Task<ValidationResponse> CreatePlayListAsync(CreatePlaylistRequest request)
         {
+            var response = new ValidationResponse {Success = true, HttpStatusCode = 200 };
             spotifyApi = new SpotifyWebAPI
             {
                 AccessToken = request.AccessToken,
@@ -33,8 +32,15 @@ namespace SpotifyTree.Domain.Implementations
             var userId = await spotifyApi.GetPrivateProfileAsync();
             var playlist = await spotifyApi.CreatePlaylistAsync(userId.Id, $"SpotifyTree - {request.PlaylistName}");
             var addToPlaylist = await spotifyApi.AddPlaylistTracksAsync(playlist.Id, request.SongIds.ToList());
+            if(addToPlaylist.Error != null)
+            {
+                response.Success = false;
+                response.Message = addToPlaylist.Error.Message;
+                response.StatusCode = addToPlaylist.Error.Status;
+                response.HttpStatusCode = (int)addToPlaylist.StatusCode();
 
-            return true;
+            }
+            return response;
         }
 
         public async Task<IEnumerable<ArtistCrawlResponse>> GetAndCreateRelatedArtist(ArtistCrawlRequest request)
@@ -79,9 +85,18 @@ namespace SpotifyTree.Domain.Implementations
             return songIds;
         }
 
-        public Task<IEnumerable<ArtistCrawlResponse>> GetAndCreateRelatedArtist(IEnumerable<ArtistCrawlRequest> request)
+        public async Task<IEnumerable<ArtistCrawlResponse>> GetAndCreateRelatedArtist(IEnumerable<ArtistCrawlRequest> requests)
         {
-            throw new NotImplementedException();
+            var response = new List<ArtistCrawlResponse>();
+            var listsOfTasks = new List<Task<IEnumerable<ArtistCrawlResponse>>>();
+            foreach(var request in requests)
+            {
+                listsOfTasks.Add(GetAndCreateRelatedArtist(request));
+            }
+            var tasks = Task.WhenAll(listsOfTasks);
+            var result = await tasks;
+            response = result.SelectMany(x => x).ToList();
+            return response;
         }
     }
 }

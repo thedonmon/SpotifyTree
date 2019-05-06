@@ -40,6 +40,9 @@ namespace SpotifyTree
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            Environment.SetEnvironmentVariable("ClientId", Configuration.GetSection("ClientId").Value);
+            Environment.SetEnvironmentVariable("ClientSecret", Configuration.GetSection("ClientSecret").Value);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
