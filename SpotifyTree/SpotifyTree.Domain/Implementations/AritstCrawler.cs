@@ -58,7 +58,7 @@ namespace SpotifyTree.Domain.Implementations
                 TokenType = token.TokenType
             };
 
-            var searchRequest = await spotifyApi.SearchItemsAsync(request.ArtistName, SearchType.Artist, limit: 10, market: request.CountryOrigin);
+            var searchRequest = await spotifyApi.SearchItemsAsync(request.ArtistName, SearchType.Artist, limit: request.ArtistSearchLimit, market: request.CountryOrigin);
             var artistFromSearch = searchRequest.Artists.Items.Where(x => x.Name.Equals(request.ArtistName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
             var artistId = artistFromSearch.Id;

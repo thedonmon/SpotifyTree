@@ -11,6 +11,7 @@ namespace SpotifyTree.Domain.Models.RequestModels
         public int TopSongsLimit { get; set; } = 3;
         public int TopArtistLimit { get; set; }
         public string CountryOrigin { get; set; } = "US";
+        public int ArtistSearchLimit { get; set; } = 25;
 
     }
 }
